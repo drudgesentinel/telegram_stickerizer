@@ -1,5 +1,6 @@
 # telegram_stickerizer
 A short script to reformat images to comply with the sticker requirements of Telegram Messenger (512px on one side, .png)
+REQUIRES IMAGEMAGICK TO FUNCTION
 
 Usage: ./stickerizer image_source_dir destination_image_dir
 
