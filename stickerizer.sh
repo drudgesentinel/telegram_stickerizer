@@ -8,6 +8,14 @@ echo "Provide a picture directory as the argument."
 exit 64
 fi
 
+echo "The last character of the picture directory is " + ${PICDIR: -1}
+if [ "${PICDIR: -1}" != "/" ] ; then
+
+#Make sure to not confuse any little ubuntu babbies
+echo "Appending backslash to dirname"
+PICDIR=${PICDIR}/
+fi
+
 if [ ! -d $DESTDIR ] || [ $# -lt 2 ] ; then
 echo "provide a destination directory"
 exit 64
@@ -22,8 +30,7 @@ case "$EXT" in
 ;;
 	png) echo "$FILE : Already png, ready to resize"
 ;;
-	*) echo "$FILE : File type not supported for conversion"
-;;
+    
 esac
 done
 
@@ -31,15 +38,16 @@ echo 'Confirm the above files should be converted to .png and resized (y/n)'
 read CONFIRM
 if [[ $CONFIRM =~ [yY] ]]; then
 echo "Confirmed."
+echo "Converting files...."
 for FILE in $(find "$PICDIR")
 do
 EXT=${FILE##*\.}
 case "$EXT" in
-	jpg) convert $FILE -resize 512x512 $(echo $FILE | sed s/.jpg/\_stickerized.png/); echo "converting .jpg $FILE"
+	jpg) convert $FILE -resize 512x512 $(echo $FILE | sed s/.jpg/\_stickerized.png/)
 ;;
-	gif) convert $FILE -resize 512x512 $(echo $FILE | sed s/.gif/\_stickerized.png/);echo "converting .gif $FILE"
+	gif) convert $FILE -resize 512x512 $(echo $FILE | sed s/.gif/\_stickerized.png/)
 ;;
-	png) convert $FILE -resize 512x512 $(echo $FILE | sed s/.png/\_stickerized.png/);echo "resizing .png $FILE"
+	png) convert $FILE -resize 512x512 $(echo $FILE | sed s/.png/\_stickerized.png/)
 ;;
 esac
 done
